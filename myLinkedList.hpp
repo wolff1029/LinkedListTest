@@ -22,12 +22,12 @@ using namespace std;
 //PROJECT 3 STUDENT FILE
 
 //Defintion of the node to be used in the linked list
-	template<class type>
-	struct linkNode
-	{
-		type data;
-		linkNode <type> *nextElement;
-	};
+template<class type>
+struct linkNode
+{
+	type data;
+	linkNode <type> *nextElement;
+};
 
 //template class that implements a linked list of elements
 //It is assumed that the list will either be empty or completely full
