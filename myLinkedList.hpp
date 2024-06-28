@@ -5,10 +5,51 @@
 * Statement: Create a template class that implements a linked list as per the 
 * requirements outlined in lab 3.
 * Specifications: This program will provide methods which do the following:
-
-* Input - For the above methods
-
-* Output - For the above methods
+	- Theree constructors for the linked list template class
+	- One destructor for the linked list template class
+	- A method to retrieve the first pointer
+	- A method to retrieve the last pointer
+	- A method to retrieve the count of the list
+	- A method to print the contents of the list and its count
+	- An overload definition for the equals operator
+	- A helper method to initialize the pointers to null and count to zero
+	- A helper method to delete the contents of the linked list
+	- A utility method to initialize the linked list based on another linked list
+* Input - For the above methods:
+	- The constructors for the linked list template class require as follows:
+		- A default constructor with no inputs
+		- A constructor which requires an integer and array of elements as input
+		- A constructor which requires another linked list as an input
+	- The destructor for the linked list template class requires no inputs
+	- The method to retrieve the first pointer requires no inputs
+	- The method to retrieve the last pointer requires no inputs
+	- The method to retrieve the count of the list requires no inputs
+	- The method to print the contents of the list and its count which requires an
+	  output stream variable as input
+	- The overload definition for the equals operator which requires another 
+	  linked list as input
+	- The helper method to initialize the pointers to null and count to zero
+	  requires no input
+	- The helper method to delete the contents of the linked list requires no input
+	- The utility method to initialize the linked list based on another linked list 
+	  requires another linked list as input
+* Output - For the above methods:
+	- The constructors for the linked list template class intialize the linked list
+	  but have no explicit output or return type.
+	- The destructor for the linked list template class deintializes the linked list
+	  but has no explicit output or return type.
+	- The method to retrieve the first pointer returns a pointer
+	- The method to retrieve the last pointer returns a pointer
+	- The method to retrieve the count of the list returns an integer
+	- The method to print the contents of the list and its count which has no return
+	  type but logs the contents of the linked list to the output
+	- The overload definition for the equals operator returns a linked list
+	- The helper method to initialize the properties of the linked list has no explicit
+	  return
+	- The helper method to delete the contents of the linked list has no explicit
+	  return
+	- The utility method to initialize the linked list based on another linked list 
+	  has no explicit return
 
 *************************************************************************/
 
@@ -127,7 +168,7 @@ myLinkedList<type>::myLinkedList(int n, type *anArray)
 	setDataMembers();
 
 	for(int i = 0; i < n; i++) {
-		addFirst(anArray[i]);
+		addLast(anArray[i]);
 	}
 	
 }
@@ -136,11 +177,13 @@ template <class type>
 void myLinkedList<type>::destroyList()
 {
 	if(first != nullptr){
-		for(int i = 0; i<count -1; i++) {
-		linkNode<type>* temp = first;
-			if(first->nextElement != nullptr){
-				first = first->nextElement;
-			}
+		linkNode<type>* toBeDeleted = first;
+		linkNode<type>* next = nullptr;
+
+		while(toBeDeleted != nullptr) {
+			next = toBeDeleted->nextElement;
+			 delete toBeDeleted;
+			toBeDeleted = next;
 		}
 	}
 }
@@ -200,13 +243,20 @@ void myLinkedList<type>::print(ostream& outStream){
 				loopLink = first;
 			}
 			// cout<< "print i = " << i << endl;
-			cout<< "print data = " << loopLink->data << endl;
+			outStream<< loopLink->data << " ";
 
 			if(loopLink->nextElement != nullptr){
+				outStream<< "-> ";
+
 				 loopLink = loopLink->nextElement;
 			}
 		}
+	} else{
+		outStream << "EMPTY LIST";
 	}
+
+	outStream<< endl << "count = " << count;
+
 }
 
 template <class type>
