@@ -110,8 +110,8 @@ class myLinkedList
 template <class type>
 void myLinkedList<type>::setDataMembers()
 {
-	first = NULL;
-	last = NULL;
+	first = nullptr;
+	last = nullptr;
 	count=0;
 }
 
@@ -124,21 +124,21 @@ myLinkedList<type>::myLinkedList()
 template <class type>
 myLinkedList<type>::myLinkedList(int n, type *anArray)
 {
-	count=n;
-	for(int i = 0; i<n; i++) {
+	setDataMembers();
+
+	for(int i = 0; i < n; i++) {
 		addFirst(anArray[i]);
 	}
-	return *this;
 	
 }
 
 template <class type>
 void myLinkedList<type>::destroyList()
 {
-	if(first != NULL){
+	if(first != nullptr){
 		for(int i = 0; i<count -1; i++) {
 		linkNode<type>* temp = first;
-			if(first->nextElement != NULL){
+			if(first->nextElement != nullptr){
 				first = first->nextElement;
 			}
 		}
@@ -149,19 +149,27 @@ template <class type>
 myLinkedList<type>::~myLinkedList()
 {
 	destroyList();
-	delete first;
-	delete last;
 }
 
 template <class type>
 void myLinkedList<type>::copyList(const myLinkedList<type>& otherList)
 {
-	if(otherList->first != NULL){
-		first = otherList.first;
-		count = otherList.count;
-			for(int i = 0; i<count; i++) {
-				addFirst(otherList[i]);
+	if(otherList.first != nullptr){
+
+		setDataMembers();
+
+		linkNode <type> *loopLink;
+
+		for(int i = 0; i < otherList.count; i++) {
+			if(i == 0){
+				loopLink = otherList.first;
 			}
+			addLast(loopLink->data);
+
+			if(loopLink->nextElement != nullptr){
+				 loopLink = loopLink->nextElement;
+			}
+		}
 	}
 	
 }
@@ -183,17 +191,18 @@ myLinkedList<type>& myLinkedList<type>::operator=(const myLinkedList& rhs)
 
 
 template <class type>
-void myLinkedList<type>::print(ostream& outStream)
-{
-	if(first != NULL){
+void myLinkedList<type>::print(ostream& outStream){
+	if(first != nullptr){
 		linkNode <type> *loopLink;
 
-		for(int i = 0; i<count -1; i++) {
+		for(int i = 0; i < count; i++) {
 			if(i == 0){
 				loopLink = first;
 			}
-			outStream << loopLink->data;
-			if(loopLink->nextElement != NULL){
+			// cout<< "print i = " << i << endl;
+			cout<< "print data = " << loopLink->data << endl;
+
+			if(loopLink->nextElement != nullptr){
 				 loopLink = loopLink->nextElement;
 			}
 		}
@@ -201,30 +210,41 @@ void myLinkedList<type>::print(ostream& outStream)
 }
 
 template <class type>
-void myLinkedList<type>::addFirst(const type& theItem)
-{	
+void myLinkedList<type>::addFirst(const type& theItem){	
+	
 	count++;
 
-	linkNode<type> newLink;
-	newLink.data = theItem;
-	 if(first != NULL){
-		newLink.nextElement = first;
-	}
-	first = &newLink;
+	linkNode<type> *temp = new linkNode<type>();
+	temp->data = theItem;
+	temp->nextElement = first;
+	first = temp;
 
-	if(last == NULL){
-		last = &newLink;
+	if(last == nullptr){
+		last = temp;
 	}
 }
 
 template <class type>
-void myLinkedList<type>::addLast(const type& theItem)
-{
-	linkNode<type> newLink;
-	newLink.data = theItem;
-	newLink.next = NULL;
-	last->nextElement = newLink;
+void myLinkedList<type>::addLast(const type& theItem){	
+	count++;
+
+	linkNode<type> *temp = new linkNode<type>();
+	temp->data = theItem;
+	temp->nextElement = nullptr;
 	
+
+	if(first == nullptr){
+		first = temp;
+		last = temp;
+		return;
+	}
+
+	while(last->nextElement != nullptr){
+		last = last->nextElement;
+	}
+
+	last->nextElement = temp;
+
 }
 
 #endif /* MYLINKEDLIST_H_ */
